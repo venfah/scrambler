@@ -1,5 +1,9 @@
-## To sort based on on of words in a text file.
-filename = '../resources/content.txt'
+
+'''
+This script is to read a file and find first 3 max word occurences.
+'''
+
+filename = 'resources/content.txt'
 count_dict = {}
 
 for line in open(filename, 'r'):
