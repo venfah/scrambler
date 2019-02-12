@@ -1,0 +1,56 @@
+
+
+catapult -p -now  maim --full-device -b168kb -t1 -Q256 -%x100 -%o168kb -l35 -O -Y5 -u -d10800 -M60 --handler=timeout,corrupt:xip,le,v0 -\!3 
+
+catapult -p -now  maim --full-device -t1 -b -Q256 -%o162kb -%x100 -l35 -O -Y5 -u -d10800 -M60 --handler=timeout,corrupt:xip,le,v0 -\!3 
+
+-f"/dev/mapper/mpath,/dev/mapper/mpath,/dev/mapper/mpath,/dev/mapper/mpath,/dev/mapper/mpath,/dev/mapper/mpath,/dev/mapper/mpath,/dev/mapper/mpath"
+-f"/dev/mapper/mpatharn,/dev/mapper/mpatharm,/dev/mapper/mpatharg,/dev/mapper/mpatharh,/dev/mapper/mpathari,/dev/mapper/mpatharj,/dev/mapper/mpathark,/dev/mapper/mpatharl"
+-f"/dev/mapper/mpathbgl,/dev/mapper/mpathbgm,/dev/mapper/mpathbgn,/dev/mapper/mpathbgo,/dev/mapper/mpathbgp,/dev/mapper/mpathbgq,/dev/mapper/mpathbgr,/dev/mapper/mpathbgs"
+
+
+sas and oltp work loads:
+
+maim --full-device -%r100 -b128kb -Q4 -%f20,x80 -u -O -t16 -Y15 -M60 -d120 -f/dev/mapper/mpath
+
+maim --full-device -%100:r80@8KB,w20@64KB -Q4 -%f20,x80 -t16 -Y15 -M30 -i1 -d120 -f/dev/mapper/mpath
+
+
+catapult -now -p maim -Y1 -t1 -M0 -b4k -B0 -Q128 -l35 --full-device -O -d36000 - Mithun run
+catapult -now -p maim -Y15 -t1 -M0 -b1k -B0 -%x100 -Q128 -l35 --full-device -O -d36000 --handler=timeout,corrupt:xip,le,v0 -\!3
+catapult -now -p maim -Y15 -t1 -M0 -b16M -B0 -%x100 -Q128 -l35 --full-device -O -d36000 --handler=timeout,corrupt:xip,le,v0 -\!3
+
+catapult -now -p maim -Y5 -t2 -M0 -b127kb -B0 -%x100 -Q128 -l32 --full-device -O -d36000 --handler=timeout,corrupt:xip,le,v0 -\!3
+
+
+catapult -p -now  maim --full-device -b168kb -t1 -Q256 -%x100 -%o168kb -l69 -O -Y5 -u -d120 -M60 --handler=timeout,corrupt:xip,le,v0 -\!3 
+maim --full-device -b168kb -t1 -Q256 -%x100 -%o168kb -l69 -O -Y5 -u -d120 -M60 --handler=timeout,corrupt:xip,le,v0 -\!3 -f'/dev/mapper/mpathcpt'
+
+catapult -p -now  maim --full-device -b168kb -t8 -Q64 -%x100 -%o168kb -l35 -O -Y5 -u -d120 -M60 -\!3
+
+catapult -p -now  maim --full-device -b1mb -t1 -Q256 -w -l35 -O -Y5 -u -d10800 -M60 --handler=timeout,corrupt:xip,le,v0 -\!3 
+
+catapult -p -now  maim --full-device -t1 -b73kb -Q256 -%o39kb -%x100 -l35 -O -Y5 -u -d10800 -M60 --handler=timeout,corrupt:xip,le,v0 -\!3 
+catapult -p -now  maim --full-device -t1 -b73kb -Q256 -%o39kb -%x100 -l35 -O -Y5 -u -d36000 -M60 --handler=timeout,corrupt:xip,le,v0 -\!3 
+
+pre-fill.
+catapult -p -now  maim --full-device -t1 -b1MB -B0 -Q128 -l35 -O -Y5 -u -M60 --handler=timeout,corrupt:xip,le,v0 -\!3
+
+catapult -p -now  maim --full-device -b1MB -t1 -Q256 -%x100 -%o168kb -l35 -O -Y5 -u -d30800 -M60 --handler=timeout,corrupt:xip,le,v0 -\!3 
+
+
+catapult -p -now  maim --full-device -b512b -t1 -Q256 -%x100 -l35 -O -Y5 -u -d10800 -M60 --handler=timeout,corrupt:xip,le,v0 -\!3
+
+
+
+catapult -p -now  maim --full-device -b8k -t1 -Q64 -%x100 -l35 -O -Y5 -u -d36000 -M60 --handler=timeout,corrupt:xip,le,v0 -\!3
+catapult -p -now  maim --full-device -b4k -t1 -Q128 -%x100 -l32 -O -Y5 -u -d36000 -M60 --handler=timeout,corrupt:xip,le,v0 -\!3
+
+catapult -p -now  maim --full-device -b1k -%o9kb -t1 -Q128 -%x100 -l32 -O -Y5 -u -d36000 -M60 --handler=timeout,corrupt:xip,le,v0 -\!3
+
+catapult -p -now  maim --full-device -%w10@512b -%w10@1024b -%w10@1536b -%w10@2048b -%w10@2560b -%w10@3072b -%w10@3584b -%w10@4096b -%w10@4608b -t1 -Q32 -%x100 -l35 -O -Y5 -u -d10800 -M60 --handler=timeout,corrupt:xip,le,v0 -\!3
+catapult -p -now  maim --full-device -%w10@512b -t1 -Q256 -%x100 -l35 -O -Y5 -u -d10800 -M60 --handler=timeout,corrupt:xip,le,v0 -\!3
+10@512,10@1024,10@1536,10@2048,10@2560,10@3072,10@3584,10@4096,210@4608
+
+
+date --date=@1187249220 data command for epoch to normal 

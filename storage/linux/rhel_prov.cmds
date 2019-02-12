@@ -1,0 +1,46 @@
+
+
+multipath -ll | grep ^mpath | cut -f 1 -d ' ' | sort
+ 
+to rescan on linux rhel host:
+ systemctl stop multipathd; multipath -F;rmmod lpfc; rmmod qla2xxx; sleep 3; modprobe lpfc; modprobe qla2xxx; systemctl start multipathd; sleep 3; multipath; multipath -l
+ 
+ 
+ipmi power off on:
+ipmitool -H ipmi-bolt18-ioc0 power on -U ADMIN -P ADMIN 
+
+
+to list all the dev mapper drives for fio list. remove the trailing :. command = command[0:-1]
+j=''; 
+for i in `multipath -l | grep ^mpath | cut -f 1 -d ' '| sort -n` ;
+do  
+j="$j/dev/mapper/$i:"; 
+done ; 
+echo $j
+
+for i in `multipath -ll | grep ^mpath | cut -d ' ' -f 1 | sort -n`;
+do 
+echo +++++++++++++++++++++++++++++++++++++++++++++++
+echo "/dev/mapper/$i block device is mapped to $i"
+echo +++++++++++++++++++++++++++++++++++++++++++++++
+sleep 10
+umount $i
+echo y | mkfs.ext3 "/dev/mapper/$i"; 
+mkdir $i;
+sleep 1m;
+mount -t ext3 /dev/mapper/$i $i
+~/bonnie++ -u root -s 30000 -n 100 -x 1 -d $i -b -r 15000
+done
+
+
+for i in `multipath -ll | grep ^mpath | cut -d ' ' -f 1 | sort -n`;
+do 
+echo +++++++++++++++++++++++++++++++++++++++++++++++
+echo "/dev/mapper/$i block device is mapped to $i"
+echo +++++++++++++++++++++++++++++++++++++++++++++++
+echo y | mkfs.ext3 "/dev/mapper/$i"; 
+done
+
+
+catapult -p -now  maim --full-device -%w10@512b -%w10@1024b -%w10@1536b -%w10@2048b -%w10@8192b -%w10@8704b -%w10@3584b -%w10@4096b -%w10@4608b -t1 -Q32 -%x100 -l35 -O -Y5 
+-u -d10800 -M60 --handler=timeout,corrupt:xip,le,v0 -\!3

@@ -1,0 +1,54 @@
+
+# FIO profile for writing a pattern (raw device IO) randwrite  and to verify using save load profiles.
+
+fio --allow_mounted_write=1 --direct=1 --ioengine=libaio --iodepth=128 --verify_pattern=12345678 --verify=pattern --verify_state_save=1 --fill_device=1 --bs=167kb --filename=/dev/mapper/mpath --rw=randwrite --do_verify=1 --name=rand_write_167kb --verify_fatal=1 --runtime=3000 --norandommap
+
+fio --allow_mounted_write=1 --direct=1 --ioengine=libaio --iodepth=128 --verify_pattern=12345678 --verify=pattern --verify_state_load=1 --fill_device=1 --bs=167kb --filename=/dev/mapper/mpath --rw=randread --do_verify=1 --name=rand_write_167kb --verify_fatal=1 --runtime=3000 --norandommap
+
+verify_fatal : exit on first error
+
+verify_dump : dump the data corruption data
+
+verify_async : start verification read with write (just after save write starts)
+verify_backlog : start verification after writing N int blocks using load profile - saves lots of mem because save uses lots of memery to store the data to be verified
+
+blockalign=int : to align to block boundaries: give 8 if advertised bs is 4kb.
+
+
+fio --allow_mounted_write=1 --direct=1 --ioengine=libaio --iodepth=128 --verify_pattern=12345678 --verify=pattern --verify_state_save=1 --fill_device=1 --bs=1MB --filename=/dev/mapper/mpathdhf --rw=randwrite --do_verify=1 --name=rand_write_1MB --verify_fatal=1 --runtime=6000 --norandommap 
+fio --allow_mounted_write=1 --direct=1 --ioengine=libaio --iodepth=128 --verify_pattern=12345678 --verify=pattern --verify_state_load=1 --fill_device=1 --bs=1MB --filename=/dev/mapper/mpathdhf --rw=randread --do_verify=1 --name=rand_write_1MB --verify_fatal=1 --norandommap
+
+
+
+
+
+
+FIO profiles
+
+
+=======================================================================
+FIO VERIFY PATTERNS SAVE AND LOAD WITH TRIGGERS AND VERIFY FATALS
+=======================================================================
+
+fio --allow_mounted_write=1 --direct=1 --ioengine=libaio --iodepth=128 --verify_pattern=12345678 --verify=pattern --verify_state_save=1 --fill_device=1 --bs=128k --filename=/dev/mapper/mpathcje --rw=randwrite --do_verify=1 --name=save_file --verify_fatal=1 --runtime=120
+
+fio --allow_mounted_write=1 --direct=1 --ioengine=libaio --iodepth=128 --verify_pattern=12345678 --verify=pattern --verify_state_load=1 --fill_device=1 --bs=128k --filename=/dev/mapper/mpathcje --rw=randread --do_verify=1 --name=save_file --verify_fatal=1 --runtime=600
+
+
+
+fio --allow_mounted_write=1 --direct=1 --ioengine=libaio --iodepth=128 --verify_pattern=-12 --verify=pattern --verify_state_save=1 --fill_device=1 --bs=128k --filename=/dev/mapper/mpathcje --rw=randwrite --do_verify=1 --name=save_file --verify_fatal=1 --runtime=60
+
+fio --allow_mounted_write=1 --direct=1 --ioengine=libaio --iodepth=128 --verify_pattern=-12 --verify=pattern --verify_state_load=1 --fill_device=1 --bs=128k --filename=/dev/mapper/mpathcje --rw=randread --do_verify=1 --name=save_file --verify_fatal=1 --runtime=60
+
+fio --allow_mounted_write=1 --direct=1 --ioengine=libaio --iodepth=128 --verify_pattern=0x'deadface' --verify=pattern --verify_state_save=1 --fill_device=1 --bs=128k --filename=/dev/mapper/mpathcje --rw=randwrite --do_verify=1 --name=save_file --verify_fatal=1 --runtime=60
+
+fio --allow_mounted_write=1 --direct=1 --ioengine=libaio --iodepth=128 --verify_pattern=0x'deadface' --verify=pattern --verify_state_load=1 --fill_device=1 --bs=128k --filename=/dev/mapper/mpathcje --rw=randread --do_verify=1 --name=save_file --verify_fatal=1 --runtime=600
+
+
+
+
+fio --allow_mounted_write=1 --direct=1 --ioengine=libaio --iodepth=128 --verify_pattern=0x'deadface' --verify=pattern --verify_state_save=1 --fill_device=1 --bs=128k --filename=/dev/mapper/mpathcje --rw=randwrite --do_verify=1 --name=save_file --verify_fatal=1 --runtime=600 --trigger-file=trigger-file
+
+fio --allow_mounted_write=1 --direct=1 --ioengine=libaio --iodepth=128 --verify_pattern=0x'deadface' --verify=pattern --verify_state_load=1 --fill_device=1 --bs=128k --filename=/dev/mapper/mpathcje --rw=randread --do_verify=1 --name=save_file --verify_fatal=1 --runtime=600  --trigger-file=trigger-file
+
+=======================================================================
