@@ -13,7 +13,17 @@ for line in open(filename, 'r'):
 			count_dict[word] += 1
 		else:
 			count_dict[word]  = 1
-		
+
+'''
+# One more better way
+words = open(filename, 'b').read().split()
+for word in words:
+	if word in count_dict:
+		count_dict[word] += 1
+	else:
+		count_dict[word]  = 1
+'''
+
 def on_values(value):
 	return value[1]
 sorted_list = sorted(count_dict.items(), reverse=True,  key=on_values)
