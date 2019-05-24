@@ -1,0 +1,13 @@
+How to Run:
+[root@bolt31-ioc0 ~]$  crontab -l
+
+# Crontab for perodic snapcreate and snapdelete
+0 6,9,12,15,18 * * 1,2,3,4,5 su -l -c "python /root/periodic_snap.py --volume r3a9u6-7_vg1_0  >> /root/snap_cron.log 2>&1"
+
+[root@bolt31-ioc0 ~]$
+
+
+To Run this time:
+“At minute 0 past hour 6, 9, 12, 15, and 18 on Monday, Tuesday, Wednesday, Thursday, and Friday.”
+
+This script creates script and deletes snaps which are 7 days old
