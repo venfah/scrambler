@@ -1,0 +1,62 @@
+#!/bin/bash
+
+ss=${1:-b36}
+bolt=bolt36
+con='telnet conserv20'
+SSH='ssh -l root'
+declare -a hosts=("r3a6-2", "r3a6-9", "r3a6-36", "r3a6-5", "r3a6-27", "r3a6-28_dup", "r3a6-32", "r3a6-33", "r3a6-7", "r3a6-10", "r3a6-11", "r3a6-6", "r3a6-29", "r3a6-30", "r3a6-40")
+VAR=$(cat /var/lib/jenkins/vxt/atf/misc/qa_master.json | json setups.${bolt}.hosts|sed -e 's/[,\[]//g;s/\]//g;s/"//g')
+declare -a hosts=($VAR)
+hcount=${#hosts[@]}
+
+tmux source-file ~/.tmux.conf
+tmux has-session -t $ss >/dev/null 2>&1
+[[ $? == 0 ]] && { echo "Session already exist....quitting" ; exit ; } 
+
+tmux new-session -n IOCs -s $ss -d
+tmux split-window -t "$ss:1"
+tmux select-layout -t "$ss:1" "even-horizontal"
+
+tmux new-window -t "$ss:2" -n ESMs # 'telnet conserv23 6001' # KPEnter
+tmux new-window -t "$ss:3" -n Hosts
+tmux new-window -t "$ss:4" -n HostLogs
+tmux new-window -t "$ss:5" -n Monitoring
+
+for i in {1..7}
+do
+tmux split-window -t "$ss:2"
+tmux select-layout -t "$ss:2" "tiled"
+done
+
+for i in {1..3}
+do
+tmux split-window -t "$ss:3"
+tmux split-window -t "$ss:4"
+done
+
+tmux select-layout -t "$ss:3" "tiled"
+tmux select-layout -t "$ss:4" "tiled"
+
+tmux split-window -t "$ss:5" -v
+tmux split-window -t "$ss:5" -h
+
+tmux send-keys -t "$ss:1.0" "$SSH $bolt-ioc0" Enter
+tmux send-keys -t "$ss:1.1" "$SSH $bolt-ioc1" Enter
+
+p=6001
+for i in {0..7}
+do
+tmux send-keys -t "$ss:2.$i" "$con $p" Enter
+p=$((p+1))
+done
+
+for i in $(seq 0 $((hcount-1)))
+do
+tmux send-keys -t "$ss:3.$i" "$SSH ${hosts[$i]}" Enter
+tmux send-keys -t "$ss:4.$i" "$SSH ${hosts[$i]}" Enter
+done
+
+tmux send-keys -t "$ss:5.0" "$SSH $bolt-ioc0" Enter
+tmux send-keys -t "$ss:5.1" "$SSH $bolt-ioc0" Enter
+tmux send-keys -t "$ss:5.2" "$SSH $bolt-ioc1" Enter
+
