@@ -1,0 +1,71 @@
+# .bashrc
+
+# User specific aliases and functions
+
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias vi='vim'
+alias s='source ~/.bashrc'
+alias perf='/home/kishore/perf_extract.sh'
+alias hreset='/var/lib/jenkins/vxt/tests/qa/scripts/hreset_host_ipmi.sh'
+
+source /root/.tmux_profile
+source ~/.host_aliases
+alias gclog="egrep -A2 'vxcli port perfshow 5|^Ioc|^read :|^r\+w  :|^In GC Band ID|^FreeExts|vxcli dg gcmon 0' log.txt | grep -v 'execute, result:' > gcmon.log"
+
+function lshost() {
+cat /var/lib/jenkins/vxt/atf/misc/qa_master.json | json -a hosts |awk -F: '/hostname/ {print $NF}'| sed -e 's/[\"\, ]//g'| egrep -v 'win|w2k'
+}
+
+function gcleast() {
+T=${1:-10}
+[[ ! -f log.txt ]] && { echo "File log.txt not found..."; exit 255 ; }
+grep -A1 '^FreeExts' log.txt | egrep -v '^FreeE|^--'|sort -nr|tail -${T} > least${T}_FreeExts.log 
+cat least${T}_FreeExts.log
+}
+
+function topwrite() {
+awk '/^write:/ {print $0}' gcmon.log  | sort -k17 -n | grep 'G$'|tail -5
+}
+
+function dum() {
+for i in * 
+do
+du -sm $i
+done
+}
+
+function ipmi_pcycle() {
+IP=$1
+[[ -z $IP ]] && { echo "IPMI system name/IP Address needed...." ; exit 123 ; }
+ipmitool -H ${IP} chassis power cycle -U ADMIN -P ADMIN
+}
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+	. /etc/bashrc
+fi
+## MEDUSA BEGIN ##
+## Automatically generated - DO NOT edit between these comment lines.
+
+if [ "${MEDUSA_ENV:-''}" != "yup" ]; then
+	MEDUSA_MLTT_INSTALL_DIR="/opt/medusa_labs/test_tools/"
+	export MEDUSA_MLTT_INSTALL_DIR
+	PATH="${MEDUSA_MLTT_INSTALL_DIR}bin:${PATH}"
+	export PATH
+	MEDUSA_MLM_ADMIN_CFG="/opt/medusa_labs/test_tools/config/MedusaTools.cfg"
+	export MEDUSA_MLM_ADMIN_CFG
+	MEDUSA_MLM_PRODUCT=1/1
+	export MEDUSA_MLM_PRODUCT
+	MEDUSA_ENV="yup"
+	export MEDUSA_ENV
+fi
+
+type pain > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+	PATH="${MEDUSA_MLTT_INSTALL_DIR}bin:${PATH}"
+fi
+
+## MEDUSA END ##
+export PATH=/opt/vdbench/:$PATH

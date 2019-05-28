@@ -1,0 +1,34 @@
+# .bash_profile
+
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+	. ~/.bashrc
+fi
+
+# User specific environment and startup programs
+
+PATH=$PATH:$HOME/bin
+
+export PATH
+## MEDUSA BEGIN ##
+## Automatically generated - DO NOT edit between these comment lines.
+
+if [ "${MEDUSA_ENV:-''}" != "yup" ]; then
+	MEDUSA_MLTT_INSTALL_DIR="/opt/medusa_labs/test_tools/"
+	export MEDUSA_MLTT_INSTALL_DIR
+	PATH="${MEDUSA_MLTT_INSTALL_DIR}bin:${PATH}"
+	export PATH
+	MEDUSA_MLM_ADMIN_CFG="/opt/medusa_labs/test_tools/config/MedusaTools.cfg"
+	export MEDUSA_MLM_ADMIN_CFG
+	MEDUSA_MLM_PRODUCT=1/1
+	export MEDUSA_MLM_PRODUCT
+	MEDUSA_ENV="yup"
+	export MEDUSA_ENV
+fi
+
+type pain > /dev/null 2>&1
+if [ $? -ne 0 ]; then
+	PATH="${MEDUSA_MLTT_INSTALL_DIR}bin:${PATH}"
+fi
+
+## MEDUSA END ##
