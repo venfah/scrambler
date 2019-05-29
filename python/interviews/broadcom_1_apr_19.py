@@ -17,12 +17,19 @@ for word in words:
 
 2. 
 
-  1 
-  2 
-  3 import string
-  4 input_str = 'ABC'
-  5 
-  6 input_set = set(input_str)
-  7 all_set = set (string.ascii_uppercase)
-  8 print("".join(sorted(list(all_set.difference(input_set)))))
-  9 
+>>> str1 = 'abc'
+>>> set(str1)
+set(['a', 'c', 'b'])
+>>> str1 = 'abca'
+>>> set(str1)
+set(['a', 'c', 'b'])
+>>> import string
+>>> string.lowercase
+'abcdefghijklmnopqrstuvwxyz'
+>>> set(string.lowercase)
+set(['a', 'c', 'b', 'e', 'd', 'g', 'f', 'i', 'h', 'k', 'j', 'm', 'l', 'o', 'n', 'q', 'p', 's', 'r', 'u', 't', 'w', 'v', 'y', 'x', 'z'])
+>>> set(string.lowercase).difference(set(str1))
+set(['e', 'd', 'g', 'f', 'i', 'h', 'k', 'j', 'm', 'l', 'o', 'n', 'q', 'p', 's', 'r', 'u', 't', 'w', 'v', 'y', 'x', 'z'])
+>>> len(set(string.lowercase).difference(set(str1)))
+23
+>>> 
