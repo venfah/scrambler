@@ -2,6 +2,7 @@
 # Time complexity for reversing alternate columns in rows*columns 2D matrix
 # m rows and n col
 # m + m/2*reverse(log(n))
+interviewed by kiran from rubrik
 '''
 
 output = [ [1, 2, 3], [6, 5, 4], [7, 8, 9], [2,3,4]]
