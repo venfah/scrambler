@@ -27,12 +27,28 @@ Guest ran 18 lines of Python 2 (finished in 1.56s):
 
 
 '''
-2. 
+2. print every 3rd element of a list 
+I wrote with enumerate and later i was asked to write without enuermate and that also
 '''
 
+l1 = [2,3,4,5,2,3,4,5,6,7,8,9]
+
+for e,v in enumerate(l1):
+    if divmod(e, 3)[1] == 0:
+        print (v),
+print ("")
+
+for i in range(0, len(l1)):
+    if divmod (i, 3)[1] == 0:
+        print (l1[i]),
+        
 '''
 OUTPUT
+Guest ran 17 lines of Python 2 (finished in 1.36s):
 
+2 5 4 7 
+2 5 4 7
+>>> 
 '''
 
 '''
