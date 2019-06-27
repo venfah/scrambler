@@ -1,3 +1,5 @@
+
+
 '''
 1. find prime no from 1 to 100
 
@@ -80,4 +82,6 @@ systool -c fc_host -v | grep -i wwn
 6. how to get the iostat in linux, iostat.
 7. what is inflight IO
 8. What is loop back device
+
+interview by vinayak shinde and abey
 '''
