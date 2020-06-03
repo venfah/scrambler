@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  creationTimestamp: null
+  labels:
+    run: centos
+  name: centos1
+spec:
+  selector:
+    matchLabels:
+      run: centos
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        run: centos
+    spec:
+      containers:
+      - image: centos
+        name: centos
+        resources: {}
+        command: ["/scripts/ops_files.sh"]
+        volumeMounts:
+        - name: obfsim
+          mountPath: /scripts
+      volumes:
+      - name: obfsim
+        configMap:
+          name: obfsim
+          defaultMode: 0744
