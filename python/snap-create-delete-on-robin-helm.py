@@ -11,8 +11,8 @@ from collections import OrderedDict
 
 
 '''
-HOW TO RUN
-print ("python {} --helmapp app-1 --namespace default".format(os.path.basename(__file__))) --snapcount 50
+HOW TO RUN:
+print ("python {} --helmapp app-1 --namespace default --snapcount 50".format(os.path.basename(__file__)))
 '''
 
 def run(cmd):
